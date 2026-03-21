@@ -78,10 +78,10 @@ export default function RegisterForm() {
 
           {/* Rules */}
           <div className="grid grid-cols-2 gap-1 text-xs mt-2">
-            <Rule ok={passwordRules.lowercase} label="Lowercase" />
-            <Rule ok={passwordRules.uppercase} label="Uppercase" />
-            <Rule ok={passwordRules.number} label="Number" />
-            <Rule ok={passwordRules.special} label="Special char" />
+            <Rule ok={passwordRules.lowercase} label={passwordRulesConstant.lowercase.message} />
+            <Rule ok={passwordRules.uppercase} label={passwordRulesConstant.uppercase.message} />
+            <Rule ok={passwordRules.number} label={passwordRulesConstant.number.message} />
+            <Rule ok={passwordRules.special} label={passwordRulesConstant.special.message} />
           </div>
         </FormField>
 
