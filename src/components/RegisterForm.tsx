@@ -4,6 +4,13 @@ import { z } from "zod";
 import { FormField } from "./FormField";
 import { Input } from "./Input";
 
+  const passwordRulesConstant = {
+    lowercase: { regex: /[a-z]/, message: "Lowercase required" },
+    uppercase: { regex: /[A-Z]/, message: "Uppercase required" },
+    number: { regex: /[0-9]/, message: "Number required" },
+    special: { regex: /[^a-zA-Z0-9]/, message: "Special character required" },
+  };
+
 // Schema
 const schema = z
   .object({
@@ -11,10 +18,10 @@ const schema = z
     password: z
       .string()
       .min(8, "Min 8 characters")
-      .regex(/[a-z]/, "Lowercase required")
-      .regex(/[A-Z]/, "Uppercase required")
-      .regex(/[0-9]/, "Number required")
-      .regex(/[^a-zA-Z0-9]/, "Special character required"),
+      .regex(passwordRulesConstant.lowercase.regex, passwordRulesConstant.lowercase.message)
+      .regex(passwordRulesConstant.uppercase.regex, passwordRulesConstant.uppercase.message)
+      .regex(passwordRulesConstant.number.regex, passwordRulesConstant.number.message)
+      .regex(passwordRulesConstant.special.regex, passwordRulesConstant.special.message),
     repeatPassword: z.string(),
   })
   .refine((d) => d.password === d.repeatPassword, {
@@ -37,11 +44,11 @@ export default function RegisterForm() {
 
   const password = useWatch({ control, name: "password", defaultValue: "" });
 
-  const rules = {
-    lowercase: /[a-z]/.test(password),
-    uppercase: /[A-Z]/.test(password),
-    number: /[0-9]/.test(password),
-    special: /[^a-zA-Z0-9]/.test(password),
+  const passwordRules = {
+    lowercase: passwordRulesConstant.lowercase.regex.test(password),
+    uppercase: passwordRulesConstant.uppercase.regex.test(password),
+    number: passwordRulesConstant.number.regex.test(password),
+    special: passwordRulesConstant.special.regex.test(password),
   };
 
   return (
@@ -71,10 +78,10 @@ export default function RegisterForm() {
 
           {/* Rules */}
           <div className="grid grid-cols-2 gap-1 text-xs mt-2">
-            <Rule ok={rules.lowercase} label="Lowercase" />
-            <Rule ok={rules.uppercase} label="Uppercase" />
-            <Rule ok={rules.number} label="Number" />
-            <Rule ok={rules.special} label="Special char" />
+            <Rule ok={passwordRules.lowercase} label="Lowercase" />
+            <Rule ok={passwordRules.uppercase} label="Uppercase" />
+            <Rule ok={passwordRules.number} label="Number" />
+            <Rule ok={passwordRules.special} label="Special char" />
           </div>
         </FormField>
 
