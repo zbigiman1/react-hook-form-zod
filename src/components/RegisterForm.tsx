@@ -32,7 +32,7 @@ export default function RegisterForm() {
     formState: { errors, isValid },
   } = useForm<FormData>({
     resolver: zodResolver(schema),
-    mode: "onChange",
+    mode: "onTouched",
   });
 
   const password = useWatch({ control, name: "password", defaultValue: "" });
@@ -95,7 +95,7 @@ export default function RegisterForm() {
           disabled={!isValid}
           className={`w-full rounded-xl py-2 text-sm font-medium text-white transition ${
             isValid
-              ? "bg-blue-600 hover:bg-blue-700"
+              ? "bg-blue-600 hover:bg-blue-700 cursor-pointer"
               : "bg-gray-400 cursor-not-allowed"
           }`}
         >
