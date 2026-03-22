@@ -5,6 +5,7 @@ import { FormField } from "./FormField";
 import { Input } from "./Input";
 
   const passwordRulesConstant = {
+    minLength: { regex: /.{8,}/, message: "Min 8 characters" },
     lowercase: { regex: /[a-z]/, message: "Lowercase required" },
     uppercase: { regex: /[A-Z]/, message: "Uppercase required" },
     number: { regex: /[0-9]/, message: "Number required" },
@@ -17,7 +18,7 @@ const schema = z
     email: z.email("Invalid email"),
     password: z
       .string()
-      .min(8, "Min 8 characters")
+      .min(8, passwordRulesConstant.minLength.message)
       .regex(passwordRulesConstant.lowercase.regex, passwordRulesConstant.lowercase.message)
       .regex(passwordRulesConstant.uppercase.regex, passwordRulesConstant.uppercase.message)
       .regex(passwordRulesConstant.number.regex, passwordRulesConstant.number.message)
@@ -45,6 +46,7 @@ export default function RegisterForm() {
   const password = useWatch({ control, name: "password", defaultValue: "" });
 
   const passwordRules = {
+    minLength: passwordRulesConstant.minLength.regex.test(password),
     lowercase: passwordRulesConstant.lowercase.regex.test(password),
     uppercase: passwordRulesConstant.uppercase.regex.test(password),
     number: passwordRulesConstant.number.regex.test(password),
@@ -78,6 +80,7 @@ export default function RegisterForm() {
 
           {/* Rules */}
           <div className="grid grid-cols-2 gap-1 text-xs mt-2">
+            <Rule ok={passwordRules.minLength} label={passwordRulesConstant.minLength.message} />
             <Rule ok={passwordRules.lowercase} label={passwordRulesConstant.lowercase.message} />
             <Rule ok={passwordRules.uppercase} label={passwordRulesConstant.uppercase.message} />
             <Rule ok={passwordRules.number} label={passwordRulesConstant.number.message} />
